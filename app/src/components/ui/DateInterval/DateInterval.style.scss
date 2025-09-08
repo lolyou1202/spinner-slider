@@ -1,0 +1,44 @@
+.dateInterval {
+	position: relative;
+	z-index: 5;
+
+	display: flex;
+	justify-content: center;
+	gap: 80px;
+
+	@media screen and (max-width: 840px) {
+		gap: 120px;
+	}
+
+	@media screen and (max-width: 600px) {
+		justify-content: space-between;
+		gap: 20px;
+	}
+
+	&_year {
+		font-size: var(--font-size-dateinterval-l);
+		font-weight: 700;
+		line-height: 100%;
+		letter-spacing: -0.02%;
+
+		@media screen and (max-width: 1240px) {
+			font-size: var(--font-size-dateinterval-m);
+		}
+
+		@media screen and (max-width: 840px) {
+			font-size: var(--font-size-dateinterval-s);
+		}
+
+		@media screen and (max-width: 600px) {
+			font-size: var(--font-size-dateinterval-xs);
+		}
+
+		&.start {
+			color: var(--blue);
+		}
+		
+		&.end {
+			color: var(--pink);
+		}
+	}
+}

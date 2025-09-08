@@ -1,0 +1,206 @@
+@font-face {
+	font-family: 'Bebas Neue';
+	src: url('../assets/fonts/BebasNeue-Regular.ttf');
+}
+
+@font-face {
+	font-family: 'PT Sans';
+	src: url('../assets/fonts/PTSans-Regular.ttf'), url('../assets/fonts/PTSans-Bold.ttf');
+}
+
+:root {
+	--background: #f4f5f9;
+	--white: #ffffff;
+	--light: #e3e6ed;
+	--gray: #a0a5ae;
+	--pink: #ef5da8;
+	--blue: #5d5fef;
+	--dark: #42567a;
+
+	--font-size-dateinterval-l: 200px;
+	--font-size-dateinterval-m: 140px;
+	--font-size-dateinterval-s: 92px;
+	--font-size-dateinterval-xs: 56px;
+	--font-size-title-l: 56px;
+	--font-size-title-m: 36px;
+	--font-size-title-s: 20px;
+	--font-size-base-l: 24px;
+	--font-size-base-m: 20px;
+	--font-size-base-s: 16px;
+	--font-size-base-xs: 14px;
+
+	--line-height-title-l: 60px;
+	--line-height-title-m: 40px;
+	--line-height-title-s: 24px;
+	--line-height-base-l: 28px;
+	--line-height-base-m: 28px;
+	--line-height-base-s: 20px;
+	--line-height-base-xs: 18px;
+
+	--dot-size-hidden: 8px;
+	--dot-size-visible: 56px;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+
+	font-family: 'PT Sans', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 100%;
+}
+
+.app {
+	position: relative;
+	overflow: hidden;
+
+	padding: 0 80px;
+
+	background-color: var(--background);
+
+	@media screen and (min-width: 601px) {
+		&::before {
+			content: '';
+			position: absolute;
+			right: 0;
+			left: 0;
+
+			margin: 0 auto;
+
+			width: 1px;
+			height: 100%;
+
+			background-color: var(--light);
+		}
+	}
+
+	@media screen and (max-width: 1240px) {
+		padding: 0 40px;
+	}
+	@media screen and (max-width: 600px) {
+		padding: 0 20px;
+	}
+
+	&_layout {
+		position: relative;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		padding: 80px 0 40px 0;
+		margin: 0 auto;
+
+		max-width: 1440px;
+		height: 100vh;
+
+		color: var(--dark);
+		user-select: none;
+
+		@media screen and (max-width: 1240px) {
+			padding: 40px 0;
+		}
+
+		@media screen and (max-width: 600px) {
+			padding: 40px 0 20px 0;
+		}
+
+		@media screen and (min-width: 601px) {
+			border-right: 1px solid var(--light);
+			border-left: 1px solid var(--light);
+		}
+	}
+}
+
+.spinner_wrapper {
+	position: absolute;
+	top: 40%;
+	z-index: 5;
+	transform: translateY(-50%);
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100%;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		right: 0;
+		left: 0;
+		transform: translateY(-50%);
+
+		margin: 0 auto;
+
+		width: 100%;
+		height: 1px;
+
+		background-color: var(--light);
+	}
+}
+
+.interval_title {
+	position: absolute;
+	top: calc(-20px - 20px);
+
+	font-size: var(--font-size-base-s);
+	line-height: var(--line-height-base-s);
+	font-weight: 700;
+
+	transition: all 0.2s ease;
+
+	&.hide {
+		transform: translateY(5px);
+		opacity: 0;
+	}
+}
+
+.dateInterval_wrapper {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+
+	width: 100%;
+
+	@media screen and (max-width: 600px) {
+		position: static;
+		transform: none;
+	}
+}
+
+.slider_wrapper {
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+
+	padding: 0 80px;
+
+	@media screen and (max-width: 1240px) {
+		padding: 0 40px;
+	}
+	@media screen and (max-width: 600px) {
+		padding: 20px 0 0 0;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			left: 0;
+
+			margin: 0 auto;
+
+			width: 100%;
+			height: 1px;
+
+			background-color: var(--light);
+		}
+	}
+}

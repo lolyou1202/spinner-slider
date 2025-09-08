@@ -1,0 +1,45 @@
+.title {
+	position: relative;
+
+	padding-left: 80px;
+
+	width: 420px;
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 5px;
+		height: 100%;
+		background: linear-gradient(180deg, var(--blue), var(--pink));
+	}
+
+	@media screen and (max-width: 1240px) {
+		padding-left: 40px;
+
+		width: 260px;
+	}
+
+	@media screen and (max-width: 600px) {
+		padding-left: 40px;
+
+		width: 180px;
+	}
+
+	&_text {
+		font-size: var(--font-size-title-l);
+		line-height: var(--line-height-title-l);
+		font-weight: 700;
+		
+		@media screen and (max-width: 1240px) {
+			font-size: var(--font-size-title-m);
+			line-height: var(--line-height-title-m);
+		}
+		
+		@media screen and (max-width: 600px) {
+			font-size: var(--font-size-title-s);
+			line-height: var(--line-height-title-s);
+		}
+	}
+}

@@ -1,0 +1,10 @@
+export const START_INDEX_INTERVAL = 0
+
+export const DELAY_UPDATE_INTERVAL = 50
+export const DELAY_UPDATE_SLIDER = 1_000
+
+export const DURATION_ROTATE_SPINNER = 1_000
+
+export const DEFAULT_COUNT_SPINNER_POINTS = 6
+export const MAX_COUNT_SPINNER_POINTS = 6
+export const MIN_COUNT_SPINNER_POINTS = 2

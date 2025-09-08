@@ -1,0 +1,128 @@
+.spinner {
+	position: relative;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 530px;
+	height: 530px;
+
+	border: 1px solid var(--gray);
+	border-radius: 50%;
+
+	pointer-events: none;
+
+	@media screen and (max-width: 1240px) {
+		--dot-size-visible: 48px;
+
+		width: 400px;
+		height: 400px;
+	}
+
+	@media screen and (max-width: 840px) {
+		--dot-size-hidden: 6px;
+		--dot-size-visible: 40px;
+
+		width: 320px;
+		height: 320px;
+	}
+
+	&_point {
+		position: absolute;
+		z-index: 10;
+
+		display: flex;
+		justify-content: center;
+
+		width: 100%;
+		height: 100%;
+
+		&_wrapper {
+			position: relative;
+			top: calc((0px - var(--dot-size-visible)) / 2);
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			width: var(--dot-size-visible);
+			height: var(--dot-size-visible);
+
+			cursor: pointer;
+		}
+
+		&_title {
+			position: absolute;
+			top: 50%;
+			left: calc(var(--dot-size-visible) + 20px);
+
+			width: max-content;
+
+			transform: translateY(-50%);
+			opacity: 0;
+
+			font-size: var(--font-size-base-m);
+			line-height: var(--line-height-base-m);
+			font-weight: 700;
+
+			transition: opacity 0.2s ease-in-out;
+
+			@media screen and (max-width: 840px) {
+				font-size: var(--font-size-base-s);
+				line-height: var(--line-height-base-s);
+			}
+		}
+
+		&_index {
+			position: relative;
+			z-index: 11;
+			overflow: hidden;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			height: var(--dot-size-hidden);
+			width: var(--dot-size-hidden);
+
+			transform-origin: 50% 50%;
+
+			background-color: var(--dark);
+			border: 1px solid var(--dark);
+			border-radius: 50%;
+
+			pointer-events: all;
+
+			font-size: var(--font-size-base-m);
+			line-height: var(--line-height-base-m);
+
+			transition: all 0.2s ease-in-out, transform;
+
+			&:hover {
+				width: 100%;
+				height: 100%;
+
+				background-color: var(--background);
+			}
+
+			@media screen and (max-width: 840px) {
+				font-size: var(--font-size-base-s);
+				line-height: var(--line-height-base-s);
+			}
+		}
+
+		&.active {
+			.spinner_point_title {
+				opacity: 1;
+			}
+			
+			.spinner_point_index {
+				width: 100%;
+				height: 100%;
+
+				background-color: var(--background);
+			}
+		}
+	}
+}
