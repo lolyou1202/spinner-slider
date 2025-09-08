@@ -16,7 +16,6 @@ import SpinnerPoint from './SpinnerPoint'
 interface SpinnerProps {
 	pointsList: string[]
 	activePointIndex?: number
-	inAnimation?: boolean
 	onChangePoint?: (pointIndex: number) => void
 	setAnimation?: (isAnimation: boolean) => void
 }
@@ -24,7 +23,6 @@ interface SpinnerProps {
 const Spinner: FC<SpinnerProps> = ({
 	pointsList,
 	activePointIndex = 0,
-	inAnimation,
 	onChangePoint,
 	setAnimation,
 }) => {
@@ -41,7 +39,6 @@ const Spinner: FC<SpinnerProps> = ({
 	const [pointAngle, setPointAngle] = useState(calculateAngle(countPoints))
 
 	const handleChangeActivePoint = (pointIndex: number) => {
-		if (inAnimation) return
 		if (pointIndex === _activePointIndex) return
 
 		setActivePoint(pointIndex)

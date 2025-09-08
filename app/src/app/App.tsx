@@ -32,12 +32,13 @@ const App = () => {
 
 	const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
 
-	const handleClickNavigation = useCallback((value: number) => {
+	const handleClickNavigation = (value: number) => {
 		if (
 			(value < 0 && intervalIndex === 0) ||
 			(value > 0 && intervalIndex + 1 === historyIntervals.length)
-		)
+		) {
 			return
+		}
 
 		setIntervalIndex(intervalIndex + value)
 
@@ -49,7 +50,7 @@ const App = () => {
 				clearTimeout(timer)
 			}, DURATION_ROTATE_SPINNER)
 		}
-	}, [intervalIndex])
+	}
 
 	useEffect(() => {
 		let start = historyInterval.interval.start
@@ -111,7 +112,6 @@ const App = () => {
 						<Spinner
 							pointsList={historyIntervals.map(interval => interval.name)}
 							activePointIndex={intervalIndex}
-							inAnimation={inAnimation}
 							onChangePoint={setIntervalIndex}
 							setAnimation={setAnimation}
 						/>
