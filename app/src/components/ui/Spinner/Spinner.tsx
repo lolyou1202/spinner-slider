@@ -52,14 +52,14 @@ const Spinner: FC<SpinnerProps> = ({
 		const finalAngle = currentAngle + angleDifference + calculateAngle(countPoints)
 
 		gsap.to(
-			{ angle: pointAngle },
+			{ angle: currentAngle },
 			{
 				angle: finalAngle,
 				duration: DURATION_ROTATE_SPINNER / 1000,
+				ease: 'power1.out',
 				onUpdate: function () {
 					setPointAngle(this.targets()[0].angle)
 				},
-				ease: 'power1.out',
 			}
 		)
 	}

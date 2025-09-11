@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { DURATION_ROTATE_SPINNER, START_INDEX_INTERVAL } from '@config/settings'
 
@@ -20,36 +20,28 @@ const App = () => {
 
 	const windowDimensions = useWindowDimensions()
 
-	const handleClickNavigation = (value: number) => {
-		if (
-			(value < 0 && intervalIndex === 0) ||
-			(value > 0 && intervalIndex + 1 === historyIntervals.length)
-		) {
-			return
-		}
-
-		setIntervalIndex(intervalIndex + value)
-
-		if (setAnimation) {
-			setAnimation(true)
-
-			const timer = setTimeout(() => {
-				setAnimation(false)
-				clearTimeout(timer)
-			}, DURATION_ROTATE_SPINNER)
-		}
-	}
-
-	const handleChangePoint = (pointIndex: number) => {
-		setIntervalIndex(pointIndex)
-
+	const handleChangeAnimation = useCallback(() => {
 		setAnimation(true)
 
 		const timer = setTimeout(() => {
 			setAnimation(false)
 			clearTimeout(timer)
 		}, DURATION_ROTATE_SPINNER)
-	}
+	}, [setAnimation])
+
+	const handleClickNavigation = useCallback((value: number) => {
+		setIntervalIndex(prevValue => prevValue + value)
+
+		handleChangeAnimation()
+	}, [])
+
+	const handleChangePoint = useCallback((pointIndex: number) => {
+		setIntervalIndex(pointIndex)
+
+		setAnimation(true)
+
+		handleChangeAnimation()
+	}, [])
 
 	const dateInterval = (
 		<div className='dateInterval_wrapper'>
@@ -77,31 +69,18 @@ const App = () => {
 				) : (
 					<>{dateInterval}</>
 				)}
-				{windowDimensions.width > 600 ? (
-					<IntervalSlider
-						variant='desktop'
-						inAnimation={inAnimation}
-						slides={historyInterval.slides}
-						propgress={{
-							current: intervalIndex + 1,
-							total: historyIntervals.length,
-						}}
-						title={historyInterval.name}
-						handleClickNavigation={handleClickNavigation}
-					/>
-				) : (
-					<IntervalSlider
-						variant='mobile'
-						inAnimation={inAnimation}
-						slides={historyInterval.slides}
-						propgress={{
-							current: intervalIndex + 1,
-							total: historyIntervals.length,
-						}}
-						title={historyInterval.name}
-						handleClickNavigation={handleClickNavigation}
-					/>
-				)}
+
+				<IntervalSlider
+					variant={windowDimensions.width > 600 ? 'desktop' : 'mobile'}
+					inAnimation={inAnimation}
+					slides={historyInterval.slides}
+					propgress={{
+						current: intervalIndex + 1,
+						total: historyIntervals.length,
+					}}
+					title={historyInterval.name}
+					handleClickNavigation={handleClickNavigation}
+				/>
 			</div>
 		</div>
 	)

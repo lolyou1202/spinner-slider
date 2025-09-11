@@ -21,6 +21,10 @@
 		line-height: 100%;
 		letter-spacing: -0.02%;
 
+		@media screen and (min-width: 1240px) and (max-height: 800px) {
+			font-size: var(--font-size-dateinterval-m);
+		}
+
 		@media screen and (max-width: 1440px) {
 			font-size: var(--font-size-dateinterval-m);
 		}
@@ -36,7 +40,7 @@
 		&.start {
 			color: var(--blue);
 		}
-		
+
 		&.end {
 			color: var(--pink);
 		}
