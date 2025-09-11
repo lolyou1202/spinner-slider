@@ -15,7 +15,7 @@
 		background: linear-gradient(180deg, var(--blue), var(--pink));
 	}
 
-	@media screen and (max-width: 1240px) {
+	@media screen and (max-width: 1440px) {
 		padding-left: 40px;
 
 		width: 260px;
@@ -32,7 +32,7 @@
 		line-height: var(--line-height-title-l);
 		font-weight: 700;
 		
-		@media screen and (max-width: 1240px) {
+		@media screen and (max-width: 1440px) {
 			font-size: var(--font-size-title-m);
 			line-height: var(--line-height-title-m);
 		}

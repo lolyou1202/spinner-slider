@@ -5,7 +5,7 @@ import './Navigation.style.scss'
 import { NavigationButton } from './NavigationButton'
 import { Arrow } from '@components/icons/Arrow'
 
-interface NavigationProps {
+export interface NavigationProps {
 	propgress: {
 		current: number
 		total: number

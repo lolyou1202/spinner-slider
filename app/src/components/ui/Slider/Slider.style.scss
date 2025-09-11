@@ -1,4 +1,4 @@
-.intervalSlider {
+.slider {
 	position: relative;
 
 	display: flex;
@@ -7,7 +7,7 @@
 
 	opacity: 1;
 	pointer-events: all;
-	transition: all 0.1s ease-in-out;
+	transition: all 0.2s ease-in-out;
 
 	&.hide {
 		transform: translateY(5px);
@@ -83,21 +83,31 @@
 	}
 
 	&_slide {
+		--gap: 15px;
+		--count-rows: 3;
+
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: var(--gap);
 
-		height: calc(var(--line-height-base-l) + 20px + (var(--line-height-base-m) * 4));
+		height: calc(
+			var(--line-height-base-l) + var(--gap) +
+				(var(--line-height-base-m) * var(--count-rows))
+		);
 
 		@media screen and (max-width: 840px) {
 			height: calc(
-				var(--line-height-base-m) + 20px + (var(--line-height-base-s) * 4)
+				var(--line-height-base-m) + var(--gap) +
+					(var(--line-height-base-s) * var(--count-rows))
 			);
 		}
 		@media screen and (max-width: 600px) {
-			gap: 15px;
+			--gap: 10px;
+			--count-rows: 5;
+
 			height: calc(
-				var(--line-height-base-s) + 15px + (var(--line-height-base-xs) * 4)
+				var(--line-height-base-s) + var(--gap) +
+					(var(--line-height-base-xs) * var(--count-rows))
 			);
 		}
 

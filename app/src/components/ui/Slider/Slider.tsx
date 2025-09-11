@@ -1,6 +1,6 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
-import './IntervalSlider.style.scss'
+import './Slider.style.scss'
 import 'swiper/css'
 
 import CN from 'classnames'
@@ -10,20 +10,30 @@ import { A11y, Navigation, Pagination } from 'swiper/modules'
 
 import { HistoryInterval } from '@constants/historyIntervals'
 import { Arrow } from '@components/icons/Arrow'
+import { DURATION_ROTATE_SPINNER } from '@config/settings'
 
-interface IntervalSliderProps extends SwiperProps {
+export interface SliderProps extends SwiperProps {
 	inAnimation: boolean
 	slides: HistoryInterval['slides']
 }
 
-export const IntervalSlider: FC<IntervalSliderProps> = ({
+export const Slider: FC<SliderProps> = ({
 	inAnimation,
 	slides,
 	navigation,
 	pagination,
 	...props
 }) => {
-	const sliderCN = CN('intervalSlider', { hide: inAnimation })
+	const [_slides, setSlides] = useState(slides)
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setSlides(slides)
+			clearTimeout(timer)
+		}, DURATION_ROTATE_SPINNER)
+	}, [slides])
+
+	const sliderCN = CN('slider', { hide: inAnimation })
 
 	return (
 		<div className={sliderCN}>
@@ -31,25 +41,25 @@ export const IntervalSlider: FC<IntervalSliderProps> = ({
 				{...props}
 				navigation={
 					!!navigation && {
-						prevEl: '.intervalSlider_arrow.prev',
-						nextEl: '.intervalSlider_arrow.next',
+						prevEl: '.slider_arrow.prev',
+						nextEl: '.slider_arrow.next',
 						disabledClass: 'disabled',
 					}
 				}
 				pagination={
 					!!pagination && {
-						el: '.intervalSlider_bullets',
+						el: '.slider_bullets',
 						type: 'bullets',
 						clickable: true,
 					}
 				}
 				modules={[Navigation, Pagination, A11y]}
 			>
-				{slides.map(({ title, description }, index) => (
+				{_slides.map(({ title, description }, index) => (
 					<SwiperSlide key={index}>
-						<div className='intervalSlider_slide'>
-							<p className='intervalSlider_slide_title'>{title}</p>
-							<span className='intervalSlider_slide_text'>
+						<div className='slider_slide'>
+							<p className='slider_slide_title'>{title}</p>
+							<span className='slider_slide_text'>
 								{description}
 							</span>
 						</div>
@@ -58,10 +68,10 @@ export const IntervalSlider: FC<IntervalSliderProps> = ({
 			</Swiper>
 			{!!navigation && (
 				<>
-					<button className='intervalSlider_arrow prev'>
+					<button className='slider_arrow prev'>
 						<Arrow direction='left' />
 					</button>
-					<button className='intervalSlider_arrow next'>
+					<button className='slider_arrow next'>
 						<Arrow direction='right' />
 					</button>
 				</>

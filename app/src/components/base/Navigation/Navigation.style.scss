@@ -3,6 +3,9 @@
 	flex-direction: column;
 	gap: 20px;
 
+	position: relative;
+	z-index: 6;
+
 	width: min-content;
 
 	@media screen and (max-width: 840px) {
@@ -47,7 +50,7 @@
 		cursor: pointer;
 		transition: 0.2s ease;
 
-		@media screen and (max-width: 1240px) {
+		@media screen and (max-width: 1440px) {
 			width: 48px;
 			height: 48px;
 		}

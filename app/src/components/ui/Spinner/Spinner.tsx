@@ -17,14 +17,12 @@ interface SpinnerProps {
 	pointsList: string[]
 	activePointIndex?: number
 	onChangePoint?: (pointIndex: number) => void
-	setAnimation?: (isAnimation: boolean) => void
 }
 
 const Spinner: FC<SpinnerProps> = ({
 	pointsList,
 	activePointIndex = 0,
 	onChangePoint,
-	setAnimation,
 }) => {
 	const countPoints = pointsList.length
 
@@ -64,15 +62,6 @@ const Spinner: FC<SpinnerProps> = ({
 				ease: 'power1.out',
 			}
 		)
-
-		if (setAnimation) {
-			setAnimation(true)
-
-			const timer = setTimeout(() => {
-				setAnimation(false)
-				clearTimeout(timer)
-			}, DURATION_ROTATE_SPINNER)
-		}
 	}
 
 	useEffect(() => {

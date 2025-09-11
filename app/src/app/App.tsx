@@ -1,36 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
-import {
-	DELAY_UPDATE_INTERVAL,
-	DELAY_UPDATE_SLIDER,
-	DURATION_ROTATE_SPINNER,
-	START_INDEX_INTERVAL,
-} from '@config/settings'
+import { DURATION_ROTATE_SPINNER, START_INDEX_INTERVAL } from '@config/settings'
 
 import { historyIntervals } from '@constants/historyIntervals'
 
-import { getWindowDimensions } from '@utils/getWindowDimensions'
-
-import { Navigation } from '@components/base/Navigation/Navigation'
+import { useWindowDimensions } from '@utils/useWindowDimensions'
 
 import { Title } from '@components/ui/Title/Title'
 import Spinner from '@components/ui/Spinner/Spinner'
 import { DateInterval } from '@components/ui/DateInterval/DateInterval'
-import { IntervalSlider } from '@components/ui/IntervalSlider/IntervalSlider'
+import { IntervalSlider } from '@components/base/IntervalSlider/IntervalSlider'
 
 const App = () => {
 	const [intervalIndex, setIntervalIndex] = useState(START_INDEX_INTERVAL)
 
 	const historyInterval = historyIntervals[intervalIndex]
 
-	const [intervalStart, setIntervalStart] = useState(historyInterval.interval.start)
-	const [intervalEnd, setIntervalEnd] = useState(historyInterval.interval.end)
-	const [intervalTitle, setIntervalTitle] = useState(historyInterval.name)
-
-	const [slides, setSlides] = useState(historyInterval.slides)
 	const [inAnimation, setAnimation] = useState(false)
 
-	const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions())
+	const windowDimensions = useWindowDimensions()
 
 	const handleClickNavigation = (value: number) => {
 		if (
@@ -52,137 +40,69 @@ const App = () => {
 		}
 	}
 
-	useEffect(() => {
-		let start = historyInterval.interval.start
-		let end = historyInterval.interval.end
+	const handleChangePoint = (pointIndex: number) => {
+		setIntervalIndex(pointIndex)
 
-		let prevStart = intervalStart
-		let prevEnd = intervalEnd
-
-		const updateIntervalStart: NodeJS.Timeout = setInterval(() => {
-			if (prevStart === start) {
-				return clearInterval(updateIntervalStart)
-			}
-			if (prevStart < start) {
-				setIntervalStart(++prevStart)
-			}
-			if (prevStart > start) {
-				setIntervalStart(--prevStart)
-			}
-		}, DELAY_UPDATE_INTERVAL)
-
-		const updateIntervalEnd: NodeJS.Timeout = setInterval(() => {
-			if (prevEnd === end) {
-				return clearInterval(updateIntervalEnd)
-			}
-			if (prevEnd < end) {
-				setIntervalEnd(++prevEnd)
-			}
-			if (prevEnd > end) {
-				setIntervalEnd(--prevEnd)
-			}
-		}, DELAY_UPDATE_INTERVAL)
+		setAnimation(true)
 
 		const timer = setTimeout(() => {
-			setSlides(historyInterval.slides)
-			setIntervalTitle(historyInterval.name)
-
+			setAnimation(false)
 			clearTimeout(timer)
-		}, DELAY_UPDATE_SLIDER)
-	}, [intervalIndex])
+		}, DURATION_ROTATE_SPINNER)
+	}
 
-	useEffect(() => {
-		window.addEventListener('resize', () =>
-			setWindowDimensions(getWindowDimensions())
-		)
-
-		return () =>
-			window.removeEventListener('resize', () =>
-				setWindowDimensions(getWindowDimensions())
-			)
-	}, [])
+	const dateInterval = (
+		<div className='dateInterval_wrapper'>
+			<DateInterval
+				intervalStart={historyInterval.interval.start}
+				intervalEnd={historyInterval.interval.end}
+			/>
+		</div>
+	)
 
 	return (
 		<div className='app'>
-			{windowDimensions.width > 600 && (
-				<div className='app_layout'>
-					<Title text='Исторические даты' />
+			<div className='app_layout'>
+				<Title text='Исторические даты' />
 
+				{windowDimensions.width > 600 ? (
 					<div className='spinner_wrapper'>
 						<Spinner
 							pointsList={historyIntervals.map(interval => interval.name)}
 							activePointIndex={intervalIndex}
-							onChangePoint={setIntervalIndex}
-							setAnimation={setAnimation}
+							onChangePoint={handleChangePoint}
 						/>
-						<div className='dateInterval_wrapper'>
-							<DateInterval
-								intervalStart={intervalStart}
-								intervalEnd={intervalEnd}
-							/>
-						</div>
+						{dateInterval}
 					</div>
-
-					<div className='slider_wrapper'>
-						<Navigation
-							propgress={{
-								current: intervalIndex + 1,
-								total: historyIntervals.length,
-							}}
-							isDisabledPrev={intervalIndex === 0}
-							isDisabledNext={intervalIndex === historyIntervals.length - 1}
-							onClickPrev={() => !inAnimation && handleClickNavigation(-1)}
-							onClickNext={() => !inAnimation && handleClickNavigation(1)}
-						/>
-						<IntervalSlider
-							slides={slides}
-							slidesPerView={3}
-							spaceBetween={windowDimensions.width <= 840 ? 40 : 80}
-							grabCursor
-							navigation
-							inAnimation={inAnimation}
-						/>
-					</div>
-				</div>
-			)}
-
-			{windowDimensions.width <= 600 && (
-				<div className='app_layout'>
-					<Title text='Исторические даты' />
-					<div className='dateInterval_wrapper'>
-						<DateInterval
-							intervalStart={intervalStart}
-							intervalEnd={intervalEnd}
-						/>
-					</div>
-					<div className='slider_wrapper'>
-						<p className={`interval_title ${inAnimation && 'hide'}`}>
-							{intervalTitle}
-						</p>
-						<IntervalSlider
-							slides={slides}
-							slidesPerView={2}
-							spaceBetween={25}
-							grabCursor
-							freeMode
-							navigation={false}
-							pagination
-							inAnimation={inAnimation}
-						/>
-						<Navigation
-							propgress={{
-								current: intervalIndex + 1,
-								total: historyIntervals.length,
-							}}
-							isDisabledPrev={intervalIndex === 0}
-							isDisabledNext={intervalIndex === historyIntervals.length - 1}
-							onClickPrev={() => !inAnimation && handleClickNavigation(-1)}
-							onClickNext={() => !inAnimation && handleClickNavigation(1)}
-						/>
-						<div className='intervalSlider_bullets'></div>
-					</div>
-				</div>
-			)}
+				) : (
+					<>{dateInterval}</>
+				)}
+				{windowDimensions.width > 600 ? (
+					<IntervalSlider
+						variant='desktop'
+						inAnimation={inAnimation}
+						slides={historyInterval.slides}
+						propgress={{
+							current: intervalIndex + 1,
+							total: historyIntervals.length,
+						}}
+						title={historyInterval.name}
+						handleClickNavigation={handleClickNavigation}
+					/>
+				) : (
+					<IntervalSlider
+						variant='mobile'
+						inAnimation={inAnimation}
+						slides={historyInterval.slides}
+						propgress={{
+							current: intervalIndex + 1,
+							total: historyIntervals.length,
+						}}
+						title={historyInterval.name}
+						handleClickNavigation={handleClickNavigation}
+					/>
+				)}
+			</div>
 		</div>
 	)
 }
